@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   //mode of the development
@@ -12,15 +11,7 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    //clean the dist directory in every build
-    clean: true,
   },
-  plugins: [
-    //automatically generate html file and add script tag dyanamically to it
-    new HtmlWebpackPlugin({
-      title: 'Restaurant Page',
-    }),
-  ],
   module: {
     rules: [
       {
