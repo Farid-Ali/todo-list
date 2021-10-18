@@ -1,3 +1,8 @@
-import appendProject from './project/project';
+import project from './project/project';
+import todo from './todo/todo';
 
-export default appendProject;
+function init() {
+  project.addProject();
+  todo.addTodo();
+}
+export default init;
