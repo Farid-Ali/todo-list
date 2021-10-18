@@ -9,7 +9,13 @@ const projectSchema = (() => {
   };
 
   const retriveProject = () => {
-    const projectList = JSON.parse(localStorage.getItem('projectList'));
+    const projectList = new Promise((resolve, reject) => {
+      if (JSON.parse(localStorage.getItem('projectList'))) {
+        resolve(JSON.parse(localStorage.getItem('projectList')));
+      } else {
+        reject('Unable to retrive project data');
+      }
+    });
     return projectList;
   };
 

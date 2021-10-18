@@ -12,24 +12,22 @@ const project = (() => {
     const newProjectForm = document.querySelector('#new-project-form');
     newProjectForm.classList.add('display-none');
 
-    const projectList = document.querySelector('.projects');
-    const _projectList = new Promise((resolve, reject) => {
-      if (projectSchema.retriveProject()) {
-        resolve(projectSchema.retriveProject());
-      } else {
-        reject('Unable to retrive project data');
-      }
-    });
-    _projectList
-      .then((list) => {
-        list.forEach((project) => {
-          const newProject = createProject(project.title);
-          projectList.appendChild(newProject.getProject());
+    function initProject() {
+      const projectList = document.querySelector('.projects');
+
+      const _projectList = projectSchema.retriveProject();
+      _projectList
+        .then((list) => {
+          list.forEach((project, index) => {
+            const newProject = createProject(project.title, index);
+            projectList.appendChild(newProject.getProject());
+          });
+        })
+        .catch((e) => {
+          console.log(e);
         });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    }
+    initProject();
   })();
 
   function addProject() {
@@ -47,33 +45,25 @@ const project = (() => {
 
     projectCreationSubmitBtn.addEventListener('click', function () {
       if (newProjectTitle.value.length > 0) {
-        const projectList = document.querySelector('.projects');
-
         projectSchema.saveProject(newProjectTitle.value);
-
-        const _projectList = new Promise((resolve, reject) => {
-          if (projectSchema.retriveProject()) {
-            resolve(projectSchema.retriveProject());
-          } else {
-            reject('Unable to retrive project data');
-          }
-        });
-        _projectList
-          .then((list) => {
-            list.forEach((project) => {
-              const newProject = createProject(project.title);
-              projectList.appendChild(newProject.getProject());
-            });
-          })
-          .catch((e) => {
-            console.log(e);
-          });
 
         cssUtil.toggleVisibility(newProjectBtn);
         cssUtil.toggleVisibility(newProjectForm);
+        window.location.reload();
       }
     });
   }
+
+  function deleteAllProjects() {
+    const deleteAllProjectsBtn = document.querySelector(
+      '#delete-all-project-btn'
+    );
+    deleteAllProjectsBtn.addEventListener('click', () => {
+      projectSchema.deleteAllProjects();
+      window.location.reload();
+    });
+  }
+  deleteAllProjects();
 
   return {
     addProject,
